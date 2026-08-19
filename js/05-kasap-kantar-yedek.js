@@ -439,7 +439,7 @@ function renderSettings(){
   sv2('s-datefmt',s.datefmt||'DD.MM.YYYY');sv2('s-weekstart',s.weekstart||'1');
   sv2('s-timefmt',s.timefmt||'24');sv2('s-numfmt',s.numfmt||'tr');
   // AI
-  sv2('s-aimodel',s.aimodel||'llama-3.3-70b-versatile');sv2('s-ailang',s.ailang||'tr');
+  sv2('s-aimodel',s.aimodel||'openai/gpt-oss-120b');sv2('s-ailang',s.ailang||'tr');
   const gkEl=document.getElementById('s-groq-key');
   const storedKey=s.groq_key||localStorage.getItem('_groq_key')||'';
   if(gkEl)gkEl.value=storedKey;
