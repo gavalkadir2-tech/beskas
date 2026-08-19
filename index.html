@@ -4985,6 +4985,27 @@ tr { transition: background .1s; }
               <div class="cat-wrap" id="cats-diseases"></div>
               <button class="cat-add-btn" onclick="addCat('diseases')">+ Teşhis Ekle</button>
             </div>
+            <div class="card mb">
+              <div class="card-hd"><span class="card-t">Tedarikçi Kategorileri</span>
+                <button class="btn btn-sec btn-sm" onclick="resetCats('supplier_cat')">Sıfırla</button>
+              </div>
+              <div class="cat-wrap" id="cats-supplier_cat"></div>
+              <button class="cat-add-btn" onclick="addCat('supplier_cat')">+ Kategori Ekle</button>
+            </div>
+            <div class="card mb">
+              <div class="card-hd"><span class="card-t">Çalışan Görevleri</span>
+                <button class="btn btn-sec btn-sm" onclick="resetCats('employee_role')">Sıfırla</button>
+              </div>
+              <div class="cat-wrap" id="cats-employee_role"></div>
+              <button class="cat-add-btn" onclick="addCat('employee_role')">+ Görev Ekle</button>
+            </div>
+            <div class="card mb">
+              <div class="card-hd"><span class="card-t">Yem Tipleri</span>
+                <button class="btn btn-sec btn-sm" onclick="resetCats('feed_type')">Sıfırla</button>
+              </div>
+              <div class="cat-wrap" id="cats-feed_type"></div>
+              <button class="cat-add-btn" onclick="addCat('feed_type')">+ Yem Tipi Ekle</button>
+            </div>
           </div>
 
           <!-- ⑦ BİLDİRİMLER -->
@@ -5183,7 +5204,7 @@ tr { transition: background .1s; }
                 <div class="fg"><label>AI Modeli (Groq)</label>
                   <select id="s-aimodel">
                     <option value="openai/gpt-oss-120b">GPT-OSS 120B — Önerilen </option>
-                    <option value="openai/gpt-oss-20b">GPT-OSS 20B — Hızlı</option>
+                    <option value="openai/gpt-oss-20b">GPT-OSS 20B — Hızlı <span class="ico" style="display:inline-flex;align-items:center;vertical-align:middle;line-height:1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="14" height="14"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></span></option>
                   </select>
                 </div>
                 <div class="fg"><label>Yanıt Dili</label>
