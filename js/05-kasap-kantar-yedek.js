@@ -414,7 +414,7 @@ function showStab(id,btn){
   if(btn)btn.classList.add('active');
   // Sekmeye özel init
   if(id==='kategoriler')['species','income','expense','inventory_cat','task_cat','locations','diseases','supplier_cat','employee_role','feed_type'].forEach(k=>renderCatSection(k));
-  if(id==='veri'){renderDataStats2();const yc=document.getElementById('f-yedek-auto');if(yc)yc.checked=!!D.settings.yedekleme_auto;}
+  if(id==='veri'){renderDataStats2();const yc=document.getElementById('f-yedek-auto');if(yc)yc.checked=!!D.settings.yedekleme_auto;const se=document.getElementById('sb-account-email');if(se)se.textContent=(typeof sbUser!=='undefined'&&sbUser&&sbUser.email)||'-';}
   if(id==='hakkinda')renderSysInfo2();
   if(id==='kapasite')renderBarnList();
   if(id==='roller')renderRollerSettings();

@@ -1316,8 +1316,8 @@ function showUserSwitchModal() {
         <span style="font-size:32px">${currentSession?.avatar || ''}</span>
         <div><div style="font-weight:700;font-size:14px">${currentSession?.name || '-'}</div><div style="font-size:12px;color:var(--sub)">${currentSession?.role || '-'}</div></div>
       </div>
-      <button class="btn btn-sec" style="width:100%;margin-bottom:8px" onclick="closeModal();showLoginModal()">Kullanıcı Değiştir</button>
-      <button class="btn btn-danger" style="width:100%" onclick="doLogout()">Çıkış Yap</button>
+      <button class="btn btn-sec" style="width:100%;margin-bottom:8px" onclick="closeModal();showLoginModal()">Rol Değiştir</button>
+      <button class="btn btn-danger" style="width:100%" onclick="closeModal();sbSignOut()">Hesaptan Çıkış Yap (${sbUser?.email || ''})</button>
     </div>`;
   openGenericModal(' Hesap', html);
 }
