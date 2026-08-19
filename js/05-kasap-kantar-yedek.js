@@ -294,10 +294,12 @@ let editKey=null,editIdx=-1;
 function openForm(type){
   const fd=FD[type];if(!fd)return;
   editKey=type;editIdx=-1;formPhotos=[];
+  const html=typeof fd.html==='function'?fd.html():fd.html;
   document.getElementById('md-title').textContent=fd.title;
-  document.getElementById('md-body').innerHTML=fd.html+`<div class="modal-act"><button class="btn btn-sec" onclick="closeModal()">İptal</button><button class="btn btn-pr" onclick="submitForm('${type}')">Kaydet</button></div>`;
+  document.getElementById('md-body').innerHTML=html+`<div class="modal-act"><button class="btn btn-sec" onclick="closeModal()">İptal</button><button class="btn btn-pr" onclick="submitForm('${type}')">Kaydet</button></div>`;
   document.getElementById('ov').style.display='block';document.getElementById('md').style.display='block';
   const t=today();document.querySelectorAll('#md-body input[type=date]').forEach(el=>{if(!el.value)el.value=t;});
+  if(fd.afterOpen)fd.afterOpen();
 }
 function editRecord(type,idx){
   const fd=FD[type];if(!fd||idx<0||idx>=D[fd.key].length)return;
@@ -379,11 +381,15 @@ function saveSettings(){
   applyAllPrefs();
 }
 
-const CAT_DEFAULTS={"species": ["Sığır", "Manda", "Koyun", "Keçi", "At", "Eşek", "Tavuk", "Hindi", "Kaz", "Ördek", "Bıldırcın", "Arı Kovanı", "Diğer"], "income": ["Süt Geliri", "Et Satışı", "Canlı Hayvan", "Yün Satışı", "Yumurta Satışı", "Gübre Satışı", "Damızlık", "Hibe / Destek", "Diğer Gelir"], "expense": ["Yem & Kaba Yem", "Veteriner", "İlaç & Aşı", "İşçilik & Maaş", "Yakıt & Enerji", "Ekipman & Bakım", "Kira", "Sigorta", "Ulaşım", "Diğer Gider"], "inventory_cat": ["Kesif Yem", "Kaba Yem", "İlaç", "Aşı", "Dezenfektan", "Yakıt", "Tohumluk", "Gübre", "Ekipman", "Sarf Malzeme", "Diğer"], "task_cat": ["Veteriner", "Yem & Sulama", "Temizlik", "İdari", "Hasat", "Tamir", "Eğitim", "Diğer"], "locations": ["Ahır A", "Ahır B", "Padok 1", "Padok 2", "Mera", "Kümes", "Arı Bahçesi", "Depo", "Karantina", "Diğer"], "diseases": ["Mastit", "Şap", "Brucella", "Tüberküloz", "Mavi Dil", "Koksidia", "Solunum Yolu", "İshal", "Topallık", "Diğer"]};
+const CAT_DEFAULTS={"species": ["Sığır", "Manda", "Koyun", "Keçi", "At", "Eşek", "Tavuk", "Hindi", "Kaz", "Ördek", "Bıldırcın", "Arı Kovanı", "Diğer"], "income": ["Süt Geliri", "Et Satışı", "Canlı Hayvan", "Yün Satışı", "Yumurta Satışı", "Gübre Satışı", "Damızlık", "Hibe / Destek", "Diğer Gelir"], "expense": ["Yem & Kaba Yem", "Veteriner", "İlaç & Aşı", "İşçilik & Maaş", "Yakıt & Enerji", "Ekipman & Bakım", "Kira", "Sigorta", "Ulaşım", "Diğer Gider"], "inventory_cat": ["Kesif Yem", "Kaba Yem", "İlaç", "Aşı", "Dezenfektan", "Yakıt", "Tohumluk", "Gübre", "Ekipman", "Sarf Malzeme", "Diğer"], "task_cat": ["Veteriner", "Yem & Sulama", "Temizlik", "İdari", "Hasat", "Tamir", "Eğitim", "Diğer"], "locations": ["Ahır A", "Ahır B", "Padok 1", "Padok 2", "Mera", "Kümes", "Arı Bahçesi", "Depo", "Karantina", "Diğer"], "diseases": ["Mastit", "Şap", "Brucella", "Tüberküloz", "Mavi Dil", "Koksidia", "Solunum Yolu", "İshal", "Topallık", "Diğer"], "supplier_cat": ["Yem", "İlaç", "Ekipman", "Veteriner", "Nakliye", "Diğer"], "employee_role": ["Çiftlik Müdürü", "Çoban", "Sağımcı", "Veteriner Teknisyeni", "Tarım İşçisi", "Sürücü", "Diğer"], "feed_type": ["Kaba Yem", "Kesif Yem", "Mineral", "Vitamin", "Su", "Karışık"]};
 
 function getCats(key){return (D.settings.cats&&D.settings.cats[key])||CAT_DEFAULTS[key]||[];}
 function saveCats(key,arr){if(!D.settings.cats)D.settings.cats={};D.settings.cats[key]=[...arr];persist();}
 function resetCats(key){if(!confirm('Varsayılana sıfırlansın?'))return;if(!D.settings.cats)D.settings.cats={};delete D.settings.cats[key];persist();renderCatSection(key);showToast('Sıfırlandı');}
+// Bir kategori listesinden <option> HTML'i üretir (form select'lerinde kullanılır — Ayarlar'da eklenen kategoriler anında yansır)
+function catOpts(key,selected){return getCats(key).map(v=>`<option${v===selected?' selected':''}>${v}</option>`).join('');}
+// Serbest metin alanları için Ayarlar'daki kategorileri öneri (datalist) olarak sunar — mevcut serbest yazım bozulmaz
+function catDatalist(id,key){return `<datalist id="${id}">${getCats(key).map(v=>`<option value="${v}">`).join('')}</datalist>`;}
 
 function renderCatSection(key){
   const el=document.getElementById('cats-'+key);if(!el)return;
@@ -407,7 +413,7 @@ function showStab(id,btn){
   const el=document.getElementById('stab-'+id);if(el)el.classList.add('on');
   if(btn)btn.classList.add('active');
   // Sekmeye özel init
-  if(id==='kategoriler')['species','income','expense','inventory_cat','task_cat','locations','diseases'].forEach(k=>renderCatSection(k));
+  if(id==='kategoriler')['species','income','expense','inventory_cat','task_cat','locations','diseases','supplier_cat','employee_role','feed_type'].forEach(k=>renderCatSection(k));
   if(id==='veri'){renderDataStats2();const yc=document.getElementById('f-yedek-auto');if(yc)yc.checked=!!D.settings.yedekleme_auto;}
   if(id==='hakkinda')renderSysInfo2();
   if(id==='kapasite')renderBarnList();
