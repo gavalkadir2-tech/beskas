@@ -388,7 +388,7 @@ async function testGroqKey(){
     const r = await fetch('https://api.groq.com/openai/v1/chat/completions',{
       method:'POST',
       headers:{'Content-Type':'application/json','Authorization':'Bearer '+key},
-      body:JSON.stringify({model:'llama-3.1-8b-instant',max_tokens:10,messages:[{role:'user',content:'merhaba'}]})
+      body:JSON.stringify({model:'openai/gpt-oss-20b',max_tokens:10,messages:[{role:'user',content:'merhaba'}]})
     });
     const d = await r.json();
     if(d.choices){
@@ -434,7 +434,7 @@ async function testAgroKey(){
 }
 async function groqCall(messages, system='', maxTokens=1000){
   const key = getGroqKey();
-  const model = D.settings.aimodel || 'llama-3.3-70b-versatile';
+  const model = D.settings.aimodel || 'openai/gpt-oss-120b';
   const msgs = [];
   if(system) msgs.push({role:'system', content:system});
   messages.forEach(m => { if(m.role && m.content) msgs.push(m); });
