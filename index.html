@@ -64,6 +64,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 /* DM Sans: design-system style bloğundan yükleniyor */
 *{box-sizing:border-box;margin:0;padding:0}
@@ -5256,10 +5257,15 @@ tr { transition: background .1s; }
           <!-- ⑨ VERİ YÖNETİMİ -->
           <div class="stab" id="stab-veri">
             <div class="card mb">
-              <div class="card-hd"><span class="card-t">Bulut Yedekleme (Otomatik Veri Koruma)</span>
+              <div class="card-hd"><span class="card-t">Hesap &amp; Bulut Senkron</span></div>
+              <div style="font-size:12px;color:var(--sub);margin-bottom:8px">Verileriniz Supabase hesabınıza bağlı olarak buluta kaydediliyor ve giriş yaptığınız her cihaza (telefon/PC/tablet) otomatik yansıyor. Giriş yapılan hesap: <b style="color:var(--txt)" id="sb-account-email">-</b></div>
+              <button class="btn btn-danger btn-sm" onclick="sbSignOut()">Hesaptan Çıkış Yap</button>
+            </div>
+            <div class="card mb">
+              <div class="card-hd"><span class="card-t">Bulut Yedekleme (Firebase, opsiyonel — kantar için)</span>
                 <span id="yedek-last" style="font-size:11px;color:var(--sub)"></span>
               </div>
-              <div style="font-size:12px;color:var(--sub);margin-bottom:8px">Tüm verileriniz şu an sadece bu cihazın tarayıcısında (localStorage) tutuluyor — tarayıcı önbelleği temizlenirse veri kaybolur. Kantar entegrasyonu için kurduğunuz Firebase adresini kullanarak otomatik yedek alınabilir.</div>
+              <div style="font-size:12px;color:var(--sub);margin-bottom:8px">Bu bölüm eski/ek bir yedekleme yöntemidir; ana senkron artık Supabase hesabınız üzerinden çalışıyor. Kantar entegrasyonu için kurduğunuz Firebase adresi varsa, ek bir yedek olarak burada kullanılabilir.</div>
               <div class="fr">
                 <div class="fg" style="display:flex;align-items:flex-end;gap:8px">
                   <label style="display:flex;align-items:center;gap:6px;font-size:12.5px;white-space:nowrap"><input type="checkbox" id="f-yedek-auto"/> Otomatik yedekle (10 dk'da bir + kapanışta)</label>
@@ -5505,6 +5511,7 @@ tr { transition: background .1s; }
 <script src="js/07-takvim-butce.js"></script>
 <script src="js/08-login-notif-sut.js"></script>
 <script src="js/09-finans-raporlama.js"></script>
+<script src="js/11-supabase-sync.js"></script>
 <script src="js/10-init.js"></script>
 </body>
 </html>
